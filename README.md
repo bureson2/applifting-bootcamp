@@ -22,7 +22,7 @@ Model the system to handle following data:
 #### Order line
 
 - a product code, must starts with 'W' then following 4 digits, or starts with 'G' then following 3 digits
-- a quantity could be in units in positive integer
+- a quantity could be units in positive integer
 - a current shipment supplier can take it only 1000 units per an order
 
 #### Customer info
