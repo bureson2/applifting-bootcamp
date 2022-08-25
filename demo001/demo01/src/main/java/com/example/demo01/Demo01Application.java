@@ -13,7 +13,7 @@ public class Demo01Application {
 
     public static void main(String[] args) {
         SpringApplicationBuilder app = new SpringApplicationBuilder(Demo01Application.class)
-                .properties("spring.config.location=classpath:application.properties,classpath:application.properties");
+                .properties("spring.config.location=classpath:application.yaml,classpath:application.yaml");
         app.run(args);
 
     }

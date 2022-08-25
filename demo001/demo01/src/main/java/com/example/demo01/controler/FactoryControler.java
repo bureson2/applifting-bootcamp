@@ -19,10 +19,10 @@ public class FactoryControler {
         return factoryService.getFactories();
     }
 
-    @GetMapping("factorycars/{id}")
-    public @ResponseBody List<Car> getCars(@PathVariable(value="id") Long id) {
-        return factoryService.getCarsByFactory(id);
-    }
+//    @GetMapping("factorycars/{id}")
+//    public @ResponseBody List<Car> getCars(@PathVariable(value="id") Long id) {
+//        return factoryService.getCarsByFactory(id);
+//    }
 
     @PostMapping("/newfactory")
     public Optional<Factory> createFactory(@RequestBody Factory newFactory){
