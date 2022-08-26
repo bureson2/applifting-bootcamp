@@ -1,10 +1,40 @@
 package io.applifting.jbtesting.module.ordertaking.domain;
 
+import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
 public class ValidatedOrderLine {
-    private final ProductCode productCode;
-    private final ProductQuantity productQuantity;
+    @Id
+    @Column(name = "id", nullable = false)
+    private Long id;
+
+    @OneToOne
+    @JoinColumn(name = "product_code_id")
+    private ProductCode productCode;
+    @OneToOne
+    @JoinColumn(name = "product_quantity_id")
+    private ProductQuantity productQuantity;
+
+    public void setProductQuantity(ProductQuantity productQuantity) {
+        this.productQuantity = productQuantity;
+    }
+
+    public void setProductCode(ProductCode productCode) {
+        this.productCode = productCode;
+    }
+
+    public ValidatedOrderLine() {
+
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public ValidatedOrderLine(ProductCode productCode, ProductQuantity productQuantity) {
         this.productCode = productCode;

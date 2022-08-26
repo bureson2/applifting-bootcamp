@@ -1,9 +1,33 @@
 package io.applifting.jbtesting.module.ordertaking.domain;
 
+import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
 public class CustomerInfo {
-    private final Email email;
+    @Id
+    @Column(name = "id", nullable = false)
+    private Long id;
+
+    @OneToOne
+    @JoinColumn(name = "email_id")
+    private Email email;
+
+    public CustomerInfo() {
+
+    }
+
+    public void setEmail(Email email) {
+        this.email = email;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public CustomerInfo(Email email) {
         this.email = email;

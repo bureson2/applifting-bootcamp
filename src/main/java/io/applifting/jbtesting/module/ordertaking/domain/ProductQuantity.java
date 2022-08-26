@@ -1,9 +1,29 @@
 package io.applifting.jbtesting.module.ordertaking.domain;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Objects;
 
+@Entity
 public class ProductQuantity {
-    private final int quantity;
+    @Id
+    @Column(name = "id", nullable = false)
+    private Long id;
+
+    private int quantity;
+
+    public ProductQuantity() {
+
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public ProductQuantity(int quantity) {
         this.quantity = quantity;
