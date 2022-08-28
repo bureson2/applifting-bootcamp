@@ -3,6 +3,7 @@ package bootcamp.soloproject.service;
 import bootcamp.soloproject.interfaces.MonitoredEndpointRepository;
 import bootcamp.soloproject.interfaces.UserRepository;
 import bootcamp.soloproject.model.MonitoredEndpoint;
+import bootcamp.soloproject.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,13 +33,23 @@ public class MonitoredEndpointService {
         return monitoredEndpointDao.findById(monitoredEndpoint.getId());
     }
 
+    public Optional<MonitoredEndpoint> changeOwner(Long endpointId ,Long userId){
+        Optional<User> newOwner = userDao.findById(userId);
+        Optional<MonitoredEndpoint> endpoint = monitoredEndpointDao.findById(endpointId);
+        if(newOwner.isPresent() && endpoint.isPresent()){
+            endpoint.get().setOwner(newOwner.get());
+            monitoredEndpointDao.save(endpoint.get());
+        }
+        return endpoint;
+    }
+
+
+
     public void deleteMonitoredEndpoint(Long endpointId){
         monitoredEndpointDao.deleteById(endpointId);
     }
 
 //    TODO - GET user enpdpoints
-//    TODO - PUT check endpoint
-//    TODO - PUT change owner
 
     //    TODO kontrola existence zaznamu - predchazeni 500
 }

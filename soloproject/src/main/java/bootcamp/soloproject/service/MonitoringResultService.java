@@ -2,6 +2,7 @@ package bootcamp.soloproject.service;
 
 import bootcamp.soloproject.interfaces.MonitoredEndpointRepository;
 import bootcamp.soloproject.interfaces.MonitoringResultRepository;
+import bootcamp.soloproject.model.MonitoredEndpoint;
 import bootcamp.soloproject.model.MonitoringResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,8 @@ public class MonitoringResultService {
         return monitoringResultDao.findAll();
     }
 
+//    TODO - jak je to mysleny a ma se resit s tim ukladanim tohohle? Mame to posilat v body a neresit, jak by se to provolavalo
+//    payload a status code
     public Optional<MonitoringResult> saveMonitoringResult(MonitoringResult monitoringResult, Long endpointId){
         if(endpointId != null){
             monitoringResult.setMonitoredEndpointId(monitoredEndpointDao.findById(endpointId).get());
@@ -37,7 +40,7 @@ public class MonitoringResultService {
     }
 
 //  TODO GET Records for endpoint
-//  TODO GET 10 latest records
+//  TODO GET 10 latest records for endpoint
 
     //    TODO kontrola existence zaznamu - predchazeni 500
 }
