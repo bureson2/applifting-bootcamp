@@ -26,15 +26,15 @@ public class SecurityConfig {
     }
 
     // use this config to disable security, comment out the first one
-    //    @Bean
-    //    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    //        http.csrf()
-    //                .disable()
-    //                .authorizeRequests()
-    //                .antMatchers("/**").permitAll()
-    //                .and()
-    //                .oauth2ResourceServer().jwt().jwtAuthenticationConverter(new KeycloakJwtAuthConverter());
-    //        return http.build();
-    //    }
+//        @Bean
+//        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//            http.csrf()
+//                    .disable()
+//                    .authorizeRequests()
+//                    .antMatchers("/**").permitAll()
+//                    .and()
+//                    .oauth2ResourceServer().jwt().jwtAuthenticationConverter(new KeycloakJwtAuthConverter());
+//            return http.build();
+//        }
 
 }
