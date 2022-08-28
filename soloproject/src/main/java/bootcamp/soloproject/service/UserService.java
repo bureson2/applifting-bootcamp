@@ -47,9 +47,8 @@ public class UserService {
         userDao.deleteById(userId);
     }
 
-//    TODO PUT - edit email
-//    TODO PUT - edit acces_token
 
+//    TODO PUT - edit acces_token
     //  TODO GET results for users endpoints
 
 
