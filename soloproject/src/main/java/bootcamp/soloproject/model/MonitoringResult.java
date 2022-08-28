@@ -3,6 +3,7 @@ package bootcamp.soloproject.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,7 +14,9 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 public class MonitoringResult {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -27,9 +30,10 @@ public class MonitoringResult {
     private String returnedPayload;
 
     @JoinColumn(name = "monitored_endpointId", nullable = true)
-    @ManyToOne
-    private MonitoringResult monitoredEndpointId;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private MonitoredEndpoint monitoredEndpointId;
 
 //    TODO nullable = false
+//    TODO Cascade type
 
 }

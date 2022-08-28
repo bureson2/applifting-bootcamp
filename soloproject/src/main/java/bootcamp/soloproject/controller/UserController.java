@@ -5,8 +5,11 @@ import bootcamp.soloproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class UserController {
@@ -19,5 +22,9 @@ public class UserController {
         return userService.getUsers();
     }
 
+    @PostMapping(value = "/user/new", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Optional<User> createUser(@RequestBody User newUser){
+        return userService.createUser(newUser);
+    }
 
 }

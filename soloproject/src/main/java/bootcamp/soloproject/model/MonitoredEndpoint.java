@@ -13,7 +13,9 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 public class MonitoredEndpoint {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -33,10 +35,11 @@ public class MonitoredEndpoint {
     private Integer monitoredInterval;
 
     @JoinColumn(name = "owner", nullable = true)
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private User owner;
 
     //    TODO nullable = false
+    //    TODO Cascade type
 
 
 

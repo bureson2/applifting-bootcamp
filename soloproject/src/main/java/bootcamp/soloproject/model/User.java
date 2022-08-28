@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
@@ -16,12 +13,14 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 public class User {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
 
     @Column(name = "username", nullable = true)
-    private String name;
+    private String username;
 
     @Column(name = "email", nullable = true)
     private String email;

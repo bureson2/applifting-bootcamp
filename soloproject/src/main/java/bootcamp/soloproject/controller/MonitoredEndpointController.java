@@ -4,9 +4,10 @@ import bootcamp.soloproject.model.MonitoredEndpoint;
 import bootcamp.soloproject.service.MonitoredEndpointService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class MonitoredEndpointController {
@@ -17,6 +18,11 @@ public class MonitoredEndpointController {
     @GetMapping(value = "/endpoints", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<MonitoredEndpoint> getMonitoredEndpoints(){
         return monitoredEndpointService.getMonitoredEndpoints();
+    }
+
+    @PostMapping(value = "/endpoint/new/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Optional<MonitoredEndpoint> addMonitoredEndpoint(@RequestBody MonitoredEndpoint newEndpoint, @PathVariable Long userId){
+        return  monitoredEndpointService.addMonitoredEndpoint(newEndpoint, userId);
     }
 
 }
