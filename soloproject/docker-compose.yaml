@@ -1,0 +1,29 @@
+version: "3"
+
+configs:
+  web-config:
+    file: ./application.yaml
+
+services:
+  db:
+    image: "postgres"
+    container_name: "bootcamp-db"
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=bootcamp-db
+    ports:
+      - "5432:5432"
+
+  web:
+    build: .
+    depends_on:
+      - db
+    configs:
+      - source: web-config
+        target: /app/application.yaml
+    environment:
+      SPRING_CONFIG_LOCATION: 'file:///app/application.yaml'
+    ports:
+      - "8080:8080"
