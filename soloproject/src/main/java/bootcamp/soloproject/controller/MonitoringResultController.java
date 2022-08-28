@@ -25,4 +25,9 @@ public class MonitoringResultController {
     public Optional<MonitoringResult> saveMonitoringResult(@RequestBody MonitoringResult newResult, @PathVariable Long endpointId){
         return monitoringResultService.saveMonitoringResult(newResult, endpointId);
     }
+
+    @DeleteMapping(value = "/result/{resultId}")
+    public void deleteMonitoringResult(@PathVariable Long resultId){
+        monitoringResultService.deleteMonitoringResult(resultId);
+    }
 }

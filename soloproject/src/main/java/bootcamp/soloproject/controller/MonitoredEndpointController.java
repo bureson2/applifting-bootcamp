@@ -25,4 +25,9 @@ public class MonitoredEndpointController {
         return  monitoredEndpointService.addMonitoredEndpoint(newEndpoint, userId);
     }
 
+    @DeleteMapping(value = "/endpoint/{endpointId}")
+    public void deleteEndpoint(@PathVariable Long endpointId){
+        monitoredEndpointService.deleteMonitoredEndpoint(endpointId);
+    }
+
 }

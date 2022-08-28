@@ -22,10 +22,13 @@ public class UserService {
         return userDao.findById(user.getId());
     }
 
+//    TODO void u vsech deletu
+    public void deleteUser(Long userId){
+        userDao.deleteById(userId);
+    }
 
 //    TODO PUT - edit email
 //    TODO PUT - edit acces_token
-//    TODO DELETE user
 
 
 //    TODO SECURITY ?

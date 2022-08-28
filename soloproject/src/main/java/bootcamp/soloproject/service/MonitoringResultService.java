@@ -2,9 +2,7 @@ package bootcamp.soloproject.service;
 
 import bootcamp.soloproject.interfaces.MonitoredEndpointRepository;
 import bootcamp.soloproject.interfaces.MonitoringResultRepository;
-import bootcamp.soloproject.model.MonitoredEndpoint;
 import bootcamp.soloproject.model.MonitoringResult;
-import bootcamp.soloproject.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,8 +32,12 @@ public class MonitoringResultService {
         return monitoringResultDao.findById(monitoringResult.getId());
     }
 
+    public void deleteMonitoringResult(Long resultId){
+        monitoringResultDao.deleteById(resultId);
+    }
 
 //  TODO GET Records for endpoint
 //  TODO GET 10 latest records
-//  TODO DELETE result
+
+    //    TODO kontrola existence zaznamu - predchazeni 500
 }
