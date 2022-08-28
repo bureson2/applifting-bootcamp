@@ -1,11 +1,20 @@
 package bootcamp.soloproject.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.UUID;
 
 @Entity
+@Table(name = "system_users")
+@Getter
+@Setter
+@NoArgsConstructor
 public class User {
     @Id
     @Column(name = "id", nullable = false)
@@ -20,35 +29,6 @@ public class User {
     @Column(name = "acces_token", nullable = true)
     private UUID accesToken;
 
-    public Long getId() {
-        return id;
-    }
+    //    TODO nullable = false
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public UUID getAcces_token() {
-        return accesToken;
-    }
-
-    public void setAcces_token(UUID acces_token) {
-        this.accesToken = acces_token;
-    }
 }

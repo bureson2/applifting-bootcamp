@@ -1,9 +1,17 @@
 package bootcamp.soloproject.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "monitoring_results")
+@Getter
+@Setter
+@NoArgsConstructor
 public class MonitoringResult {
     @Id
     @Column(name = "id", nullable = false)
@@ -18,47 +26,10 @@ public class MonitoringResult {
     @Column(name = "returned_payload", nullable = true)
     private String returnedPayload;
 
-    @JoinColumn(name = "monitored_endpointId", nullable = false)
+    @JoinColumn(name = "monitored_endpointId", nullable = true)
     @ManyToOne
     private MonitoringResult monitoredEndpointId;
 
-    public Long getId() {
-        return id;
-    }
+//    TODO nullable = false
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getDateOfCheck() {
-        return dateOfCheck;
-    }
-
-    public void setDateOfCheck(LocalDateTime dateOfCheck) {
-        this.dateOfCheck = dateOfCheck;
-    }
-
-    public Integer getReturnedHttpStatusCode() {
-        return returnedHttpStatusCode;
-    }
-
-    public void setReturnedHttpStatusCode(Integer returnedHttpStatusCode) {
-        this.returnedHttpStatusCode = returnedHttpStatusCode;
-    }
-
-    public String getReturnedPayload() {
-        return returnedPayload;
-    }
-
-    public void setReturnedPayload(String returnedPayload) {
-        this.returnedPayload = returnedPayload;
-    }
-
-    public MonitoringResult getMonitoredEndpointId() {
-        return monitoredEndpointId;
-    }
-
-    public void setMonitoredEndpointId(MonitoringResult monitoredEndpointId) {
-        this.monitoredEndpointId = monitoredEndpointId;
-    }
 }

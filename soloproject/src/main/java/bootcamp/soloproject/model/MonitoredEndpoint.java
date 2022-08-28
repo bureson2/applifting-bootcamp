@@ -1,9 +1,17 @@
 package bootcamp.soloproject.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "monitored_endpoints")
+@Getter
+@Setter
+@NoArgsConstructor
 public class MonitoredEndpoint {
     @Id
     @Column(name = "id", nullable = false)
@@ -28,59 +36,8 @@ public class MonitoredEndpoint {
     @ManyToOne
     private User owner;
 
-    public Long getId() {
-        return id;
-    }
+    //    TODO nullable = false
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getUri() {
-        return uri;
-    }
-
-    public void setUri(String uri) {
-        this.uri = uri;
-    }
-
-    public LocalDateTime getDateOfCreation() {
-        return dateOfCreation;
-    }
-
-    public void setDateOfCreation(LocalDateTime dateOfCreation) {
-        this.dateOfCreation = dateOfCreation;
-    }
-
-    public LocalDateTime getDateOfLastCheck() {
-        return dateOfLastCheck;
-    }
-
-    public void setDateOfLastCheck(LocalDateTime dateOfLastCheck) {
-        this.dateOfLastCheck = dateOfLastCheck;
-    }
-
-    public Integer getMonitoredInterval() {
-        return monitoredInterval;
-    }
-
-    public void setMonitoredInterval(Integer monitoredInterval) {
-        this.monitoredInterval = monitoredInterval;
-    }
-
-    public User getOwner() {
-        return owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
 }
