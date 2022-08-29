@@ -1,10 +1,15 @@
 package bootcamp.soloproject.service;
 
 import bootcamp.soloproject.interfaces.MonitoredEndpointRepository;
+import bootcamp.soloproject.interfaces.MonitoringResultRepository;
 import bootcamp.soloproject.interfaces.UserRepository;
 import bootcamp.soloproject.model.MonitoredEndpoint;
+import bootcamp.soloproject.model.MonitoringResult;
 import bootcamp.soloproject.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,6 +24,9 @@ public class MonitoredEndpointService {
 
     @Autowired
     private UserRepository userDao;
+
+    @Autowired
+    private MonitoringResultRepository monitoringResultDao;
 
     public List<MonitoredEndpoint> getMonitoredEndpoints(){
         return monitoredEndpointDao.findAll();
@@ -54,6 +62,22 @@ public class MonitoredEndpointService {
 
     public void deleteMonitoredEndpoint(Long endpointId){
         monitoredEndpointDao.deleteById(endpointId);
+    }
+
+    @Scheduled(fixedDelay = 5000)
+    public void monitorEndpoints() {
+        List<MonitoredEndpoint> monitoredEndpoints = monitoredEndpointDao.findAll();
+        for(MonitoredEndpoint endpoint : monitoredEndpoints){
+            MonitoringResult monitoringResult = new MonitoringResult();
+            monitoringResultDao.save(monitoringResult);
+
+
+            monitoringResult.setMonitoredEndpoint(monitoredEndpointDao.findById(endpoint.getId()).get());
+            monitoringResult.setDateOfCheck(LocalDateTime.now());
+            endpoint.setDateOfLastCheck(LocalDateTime.now());
+            monitoringResultDao.save(monitoringResult);
+            monitoredEndpointDao.save(endpoint);
+        }
     }
 
     //    TODO kontrola existence zaznamu - predchazeni 500

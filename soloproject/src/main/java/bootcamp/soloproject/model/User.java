@@ -19,13 +19,13 @@ public class User {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "username", nullable = true)
+    @Column(name = "username", nullable = false)
     private String username;
 
-    @Column(name = "email", nullable = true)
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "acces_token", nullable = true)
+    @Column(name = "acces_token", nullable = false)
     private UUID accesToken;
 
     //    TODO nullable = false

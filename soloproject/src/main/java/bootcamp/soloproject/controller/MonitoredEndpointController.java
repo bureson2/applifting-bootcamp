@@ -36,6 +36,12 @@ public class MonitoredEndpointController {
         return  monitoredEndpointService.addMonitoredEndpoint(newEndpoint, userId);
     }
 
+//    @ResponseStatus(code = HttpStatus.OK)
+//    @PostMapping(value = "/start")
+//    public void monitorEndpoints(){
+//        monitoredEndpointService.monitorEndpoints();
+//    }
+
     @ResponseStatus(code = HttpStatus.OK)
     @PutMapping(value = "/endpoint/{endpointId}/user/{userId}")
     public Optional<MonitoredEndpoint> changeOwner(@PathVariable Long endpointId, @PathVariable Long userId){
