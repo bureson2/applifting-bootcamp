@@ -34,12 +34,11 @@ public class MonitoredEndpoint {
     @Column(name = "monitored_interval", nullable = true)
     private Integer monitoredInterval;
 
-    @JoinColumn(name = "owner", nullable = true)
+    @JoinColumn(name = "owner_id", nullable = true)
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private User owner;
 
     //    TODO nullable = false
-    //    TODO Cascade type
 
 
 

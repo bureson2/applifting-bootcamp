@@ -5,7 +5,7 @@ spring:
   datasource:
     password: postgres
     username: postgres
-    url: jdbc:postgresql://db:5432/bootcamp-db
+    url: jdbc:postgresql://localhost:5432/bootcamp-db
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:

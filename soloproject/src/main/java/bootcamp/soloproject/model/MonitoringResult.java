@@ -28,11 +28,10 @@ public class MonitoringResult {
     @Column(name = "returned_payload", nullable = true)
     private String returnedPayload;
 
-    @JoinColumn(name = "monitored_endpointId", nullable = true)
+    @JoinColumn(name = "monitored_endpoint_id", nullable = true)
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    private MonitoredEndpoint monitoredEndpointId;
+    private MonitoredEndpoint monitoredEndpoint;
 
 //    TODO nullable = false
-//    TODO Cascade type
 
 }

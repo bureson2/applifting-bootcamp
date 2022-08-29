@@ -1,12 +1,12 @@
 server:
-    port:8080
+    port: 8080
 
 spring:
     datasource:
-        password:postgres
-        username:postgres
-        url:jdbc:postgresql://localhost:5432/bootcamp-db
-        driver-class-name:org.postgresql.Driver
+        password: postgres
+        username: postgres
+        url: jdbc:postgresql://localhost:5432/bootcamp-db
+        driver-class-name: org.postgresql.Driver
     jpa:
         hibernate:
-            ddl-auto:create
+            ddl-auto: create

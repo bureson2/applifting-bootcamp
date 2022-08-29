@@ -24,6 +24,12 @@ public class MonitoredEndpointController {
         return monitoredEndpointService.getMonitoredEndpoints();
     }
 
+    @ResponseStatus(code = HttpStatus.OK)
+    @GetMapping(value = "/endpoints/user/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<MonitoredEndpoint> getUsersMonitoredEndpoints(@PathVariable Long userId){
+        return monitoredEndpointService.getUsersMonitoredEndpoints(userId);
+    }
+
     @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping(value = "/endpoint/new/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Optional<MonitoredEndpoint> addMonitoredEndpoint(@RequestBody MonitoredEndpoint newEndpoint, @PathVariable Long userId){

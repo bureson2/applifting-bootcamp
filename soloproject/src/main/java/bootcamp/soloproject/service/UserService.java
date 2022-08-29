@@ -41,15 +41,10 @@ public class UserService {
         return user;
     }
 
-
 //    TODO void u vsech deletu
     public void deleteUser(Long userId){
         userDao.deleteById(userId);
     }
-
-
-//    TODO PUT - edit acces_token
-    //  TODO GET results for users endpoints
 
 
 //    TODO SECURITY ?

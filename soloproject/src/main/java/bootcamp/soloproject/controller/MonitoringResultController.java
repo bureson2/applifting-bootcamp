@@ -23,6 +23,27 @@ public class MonitoringResultController {
         return monitoringResultService.getMonitoringResults();
     }
 
+    @ResponseStatus(code = HttpStatus.OK)
+    @GetMapping(value = "/results/endpoint/{endpointId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<MonitoringResult> getEndpointResults(@PathVariable Long endpointId){
+
+        return monitoringResultService.getEndpointResults(endpointId);
+    }
+
+//  TODO GET 10 latest records for endpoint
+    @ResponseStatus(code = HttpStatus.OK)
+    @GetMapping(value = "/results/endpoint/{endpointId}/last")
+    public List<MonitoringResult> getLastEndpointResults(@PathVariable Long endpointId){
+        return monitoringResultService.getEndpointLastResults(endpointId);
+    }
+
+    //  TODO GET results for users endpoints
+    @ResponseStatus(code = HttpStatus.OK)
+    @GetMapping(value = "/user/{userId}/results")
+    public List<MonitoringResult> getUserEndpointsResults(@PathVariable Long userId){
+        return null;
+    }
+
     @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping(value = "/result/new/{endpointId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Optional<MonitoringResult> saveMonitoringResult(@RequestBody MonitoringResult newResult, @PathVariable Long endpointId){

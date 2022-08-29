@@ -24,6 +24,15 @@ public class MonitoredEndpointService {
         return monitoredEndpointDao.findAll();
     }
 
+    public List<MonitoredEndpoint> getUsersMonitoredEndpoints(Long userId){
+        Optional<User> user = userDao.findById(userId);
+        List<MonitoredEndpoint> toReturn = null;
+        if(user.isPresent()){
+            toReturn = monitoredEndpointDao.findByOwner(user.get());
+        }
+        return toReturn;
+    }
+
     public Optional<MonitoredEndpoint> addMonitoredEndpoint(MonitoredEndpoint monitoredEndpoint, Long userId){
         if(userId != null){
             monitoredEndpoint.setOwner(userDao.findById(userId).get());
@@ -43,13 +52,11 @@ public class MonitoredEndpointService {
         return endpoint;
     }
 
-
-
     public void deleteMonitoredEndpoint(Long endpointId){
         monitoredEndpointDao.deleteById(endpointId);
     }
 
-//    TODO - GET user enpdpoints
+
 
     //    TODO kontrola existence zaznamu - predchazeni 500
 }
