@@ -3,12 +3,14 @@ package bootcamp.soloproject.service;
 import bootcamp.soloproject.interfaces.UserRepository;
 import bootcamp.soloproject.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Component
 public class UserService {
 
     @Autowired

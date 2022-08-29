@@ -8,6 +8,7 @@ import bootcamp.soloproject.model.MonitoringResult;
 import bootcamp.soloproject.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Component
 public class MonitoredEndpointService {
 
     @Autowired

@@ -10,3 +10,9 @@ spring:
     jpa:
         hibernate:
             ddl-auto: create
+    security:
+        oauth2:
+            resourceserver:
+                jwt:
+                    issuer-uri: "http://localhost:8180/realms/Solowork-realm"
+                    jwk-set-uri: "http://localhost:8080/realms/Solowork-realm/protocol/openid-connect/certs"

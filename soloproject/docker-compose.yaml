@@ -1,5 +1,9 @@
 version: "3"
 
+configs:
+  web-config:
+    file: ./application.yaml
+
 services:
   db:
     image: "postgres"
@@ -11,5 +15,35 @@ services:
       - POSTGRES_DB=bootcamp-db
     ports:
       - "5432:5432"
+
+  keycloak-postgres:
+    image: postgres:13.2
+    ports:
+      - '5433:5432'
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:19.0.1
+    ports:
+      - '8180:8080'
+    depends_on:
+      - keycloak-postgres
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://keycloak-postgres:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: password
+      DB_VENDOR: postgres
+      DB_ADDR: keycloak-postgres
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_SCHEMA: public
+      DB_PASSWORD: password
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: password
+    entrypoint: [ "/opt/keycloak/bin/kc.sh", "--verbose start-dev" ]
 
 
