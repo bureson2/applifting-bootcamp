@@ -2,8 +2,10 @@ package bootcamp.soloproject.service;
 
 import bootcamp.soloproject.interfaces.MonitoredEndpointRepository;
 import bootcamp.soloproject.interfaces.MonitoringResultRepository;
+import bootcamp.soloproject.interfaces.UserRepository;
 import bootcamp.soloproject.model.MonitoredEndpoint;
 import bootcamp.soloproject.model.MonitoringResult;
+import bootcamp.soloproject.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,12 @@ public class MonitoringResultService {
 
     @Autowired
     private MonitoredEndpointRepository monitoredEndpointDao;
+
+    @Autowired
+    private UserRepository userDao;
+
+    @Autowired
+    private MonitoredEndpointService monitoredEndpointService;
 
     public List<MonitoringResult> getMonitoringResults(){
         return monitoringResultDao.findAll();
@@ -39,6 +47,19 @@ public class MonitoringResultService {
         List<MonitoringResult> toReturn = null;
         if(monitoredEndpoint.isPresent()){
             toReturn = monitoringResultDao.findTop10ByMonitoredEndpointOrderByDateOfCheckDesc(monitoredEndpoint.get());
+        }
+        return toReturn;
+    }
+
+    public List<MonitoringResult> getUserResults(Long userId){
+        Optional<User> user = userDao.findById(userId);
+        List<MonitoringResult> toReturn = new ArrayList<>();
+        if(user.isPresent()){
+            List<MonitoredEndpoint> endpoints = monitoredEndpointService.getUsersMonitoredEndpoints(userId);
+            for(MonitoredEndpoint e : endpoints){
+                List<MonitoringResult> results = getEndpointResults(e.getId());
+                toReturn.addAll(results);
+            }
         }
         return toReturn;
     }

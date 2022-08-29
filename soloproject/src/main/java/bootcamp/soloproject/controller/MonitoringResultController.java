@@ -30,18 +30,16 @@ public class MonitoringResultController {
         return monitoringResultService.getEndpointResults(endpointId);
     }
 
-//  TODO GET 10 latest records for endpoint
     @ResponseStatus(code = HttpStatus.OK)
     @GetMapping(value = "/results/endpoint/{endpointId}/last")
     public List<MonitoringResult> getLastEndpointResults(@PathVariable Long endpointId){
         return monitoringResultService.getEndpointLastResults(endpointId);
     }
 
-    //  TODO GET results for users endpoints
     @ResponseStatus(code = HttpStatus.OK)
     @GetMapping(value = "/user/{userId}/results")
     public List<MonitoringResult> getUserEndpointsResults(@PathVariable Long userId){
-        return null;
+        return monitoringResultService.getUserResults(userId);
     }
 
     @ResponseStatus(code = HttpStatus.CREATED)

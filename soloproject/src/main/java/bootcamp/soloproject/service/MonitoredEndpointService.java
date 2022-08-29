@@ -56,7 +56,5 @@ public class MonitoredEndpointService {
         monitoredEndpointDao.deleteById(endpointId);
     }
 
-
-
     //    TODO kontrola existence zaznamu - predchazeni 500
 }

@@ -35,13 +35,6 @@ public class UserController {
         return userService.changeEmail(email, userId);
     }
 
-    //    Not used
-//    @ResponseStatus(code = HttpStatus.OK)
-//    @PutMapping(value = "/user/{userId}/token", consumes = MediaType.APPLICATION_JSON_VALUE)
-//    public Optional<User> changeEmail(@RequestBody UUID accesToken, @PathVariable Long userId){
-//        return userService.changeAccesToken(accesToken, userId);
-//    }
-
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     @DeleteMapping(value = "/user/{userId}")
     public void deleteUser(@PathVariable Long userId){
