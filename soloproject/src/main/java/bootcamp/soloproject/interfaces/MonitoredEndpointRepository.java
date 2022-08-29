@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface MonitoredEndpointRepository extends JpaRepository<MonitoredEndpoint, Long> {
 
-    public List<MonitoredEndpoint> findByOwner(User user);
+    List<MonitoredEndpoint> findByOwner(User user);
 }

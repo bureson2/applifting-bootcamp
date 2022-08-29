@@ -1,7 +1,6 @@
 package bootcamp.soloproject.controller;
 
 import bootcamp.soloproject.model.MonitoringResult;
-import bootcamp.soloproject.model.User;
 import bootcamp.soloproject.service.MonitoringResultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface MonitoringResultRepository extends JpaRepository<MonitoringResult, Long> {
 
-    public List<MonitoringResult> findByMonitoredEndpoint(MonitoredEndpoint monitoredEndpoint);
+    List<MonitoringResult> findByMonitoredEndpoint(MonitoredEndpoint monitoredEndpoint);
 
-    public List<MonitoringResult> findTop10ByMonitoredEndpointOrderByDateOfCheckDesc(MonitoredEndpoint monitoredEndpoint);
+    List<MonitoringResult> findTop10ByMonitoredEndpointOrderByDateOfCheckDesc(MonitoredEndpoint monitoredEndpoint);
 }

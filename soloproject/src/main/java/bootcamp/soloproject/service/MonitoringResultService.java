@@ -64,12 +64,9 @@ public class MonitoringResultService {
         return toReturn;
     }
 
-//    TODO - jak je to mysleny a ma se resit s tim ukladanim tohohle? Mame to posilat v body a neresit, jak by se to provolavalo
-//    payload a status code
     public Optional<MonitoringResult> saveMonitoringResult(MonitoringResult monitoringResult, Long endpointId){
-        if(endpointId != null){
-            monitoringResult.setMonitoredEndpoint(monitoredEndpointDao.findById(endpointId).get());
-        }
+        Optional<MonitoredEndpoint> endpoint = monitoredEndpointDao.findById(endpointId);
+        endpoint.ifPresent(monitoredEndpoint -> monitoringResult.setMonitoredEndpoint(monitoredEndpointDao.findById(endpointId).get()));
         monitoringResult.setDateOfCheck(LocalDateTime.now());
         monitoringResultDao.save(monitoringResult);
         return monitoringResultDao.findById(monitoringResult.getId());
@@ -78,6 +75,4 @@ public class MonitoringResultService {
     public void deleteMonitoringResult(Long resultId){
         monitoringResultDao.deleteById(resultId);
     }
-
-    //    TODO kontrola existence zaznamu - predchazeni 500
 }

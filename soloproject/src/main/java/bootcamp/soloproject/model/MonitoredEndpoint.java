@@ -13,33 +13,28 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 public class MonitoredEndpoint {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "name", nullable = true)
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "uri", nullable = true)
+    @Column(name = "uri", nullable = false)
     private String uri;
 
-    @Column(name = "date_of_creation", nullable = true)
+    @Column(name = "date_of_creation", nullable = false)
     private LocalDateTime dateOfCreation;
 
-    @Column(name = "date_of_last_check", nullable = true)
+    @Column(name = "date_of_last_check")
     private LocalDateTime dateOfLastCheck;
 
-    @Column(name = "monitored_interval", nullable = true)
+    /* current implementation is limited from 1 to 59 seconds */
+    @Column(name = "monitored_interval", nullable = false)
     private Integer monitoredInterval;
 
-    @JoinColumn(name = "owner_id", nullable = true)
+    @JoinColumn(name = "owner_id")
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private User owner;
-
-    //    TODO nullable = false
-
-
-
 }

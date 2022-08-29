@@ -1,7 +1,6 @@
 package bootcamp.soloproject.controller;
 
 import bootcamp.soloproject.model.MonitoredEndpoint;
-import bootcamp.soloproject.model.User;
 import bootcamp.soloproject.service.MonitoredEndpointService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 public class MonitoredEndpointController {

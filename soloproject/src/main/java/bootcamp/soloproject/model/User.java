@@ -13,7 +13,6 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -27,7 +26,4 @@ public class User {
 
     @Column(name = "acces_token", nullable = false)
     private UUID accesToken;
-
-    //    TODO nullable = false
-
 }
