@@ -71,6 +71,13 @@
             <artifactId>spring-boot-test</artifactId>
             <version>1.4.2.RELEASE</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.keycloak/keycloak-spring-security-adapter -->
+        <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-spring-security-adapter</artifactId>
+            <version>19.0.1</version>
+        </dependency>
+
     </dependencies>
 
     <build>

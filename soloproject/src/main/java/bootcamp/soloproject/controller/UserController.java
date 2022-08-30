@@ -2,12 +2,16 @@ package bootcamp.soloproject.controller;
 
 import bootcamp.soloproject.model.User;
 import bootcamp.soloproject.service.UserService;
+import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +48,12 @@ public class UserController {
     @GetMapping("/public/current/user")
     public String getCurrentUser(){
         return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+
+
+    @GetMapping("/public/test")
+    public Object getTest() {
+        return null;
     }
 
 }

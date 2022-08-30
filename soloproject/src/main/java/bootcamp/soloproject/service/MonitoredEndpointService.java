@@ -8,7 +8,6 @@ import bootcamp.soloproject.model.MonitoringResult;
 import bootcamp.soloproject.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
