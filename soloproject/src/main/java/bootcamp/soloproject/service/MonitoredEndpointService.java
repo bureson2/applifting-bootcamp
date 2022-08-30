@@ -33,8 +33,9 @@ public class MonitoredEndpointService {
     @Autowired
     private MonitoringResultRepository monitoringResultDao;
 
-    @Autowired
-    private AuthorizedControlService controlService;
+    public Optional<MonitoredEndpoint> getMonitoredEndpoint(Long endpointId){
+        return monitoredEndpointDao.findById(endpointId);
+    }
 
     public List<MonitoredEndpoint> getMonitoredEndpoints() {
         return monitoredEndpointDao.findAll();
@@ -44,44 +45,35 @@ public class MonitoredEndpointService {
         Optional<User> user = userDao.findById(userId);
         List<MonitoredEndpoint> toReturn = new ArrayList<>();
         if (user.isPresent()) {
-            if (controlService.hasAcces(user.get().getUsername())) {
-                toReturn = monitoredEndpointDao.findByOwner(user.get());
-            } // TODO acces denied and not throw
+            toReturn = monitoredEndpointDao.findByOwner(user.get());
         }
         return toReturn;
     }
 
     public Optional<MonitoredEndpoint> addMonitoredEndpoint(MonitoredEndpoint monitoredEndpoint, Long userId) {
         Optional<User> owner = userDao.findById(userId);
-        if (controlService.hasAcces(owner.get().getUsername())) {
-            if (monitoredEndpoint.getMonitoredInterval() < 1 || monitoredEndpoint.getMonitoredInterval() > 59) {
-                return Optional.empty();
-            }
-            owner.ifPresent(monitoredEndpoint::setOwner);
-            monitoredEndpoint.setDateOfCreation(LocalDateTime.now());
-            monitoredEndpointDao.save(monitoredEndpoint);
-            return monitoredEndpointDao.findById(monitoredEndpoint.getId());
-        } // TODO acces denied and not throw
-        return Optional.empty();
+
+        if (monitoredEndpoint.getMonitoredInterval() < 1 || monitoredEndpoint.getMonitoredInterval() > 59) {
+            return Optional.empty();
+        }
+        owner.ifPresent(monitoredEndpoint::setOwner);
+        monitoredEndpoint.setDateOfCreation(LocalDateTime.now());
+        monitoredEndpointDao.save(monitoredEndpoint);
+        return monitoredEndpointDao.findById(monitoredEndpoint.getId());
     }
 
     public Optional<MonitoredEndpoint> changeOwner(Long endpointId, Long userId) {
         Optional<User> newOwner = userDao.findById(userId);
         Optional<MonitoredEndpoint> endpoint = monitoredEndpointDao.findById(endpointId);
-        if (controlService.hasAcces("admin")) {
-            if (newOwner.isPresent() && endpoint.isPresent()) {
-                endpoint.get().setOwner(newOwner.get());
-                monitoredEndpointDao.save(endpoint.get());
-            }
-        } // TODO acces denied and not throw
+        if (newOwner.isPresent() && endpoint.isPresent()) {
+            endpoint.get().setOwner(newOwner.get());
+            monitoredEndpointDao.save(endpoint.get());
+        }
         return endpoint;
     }
 
     public void deleteMonitoredEndpoint(Long endpointId) {
-        User user = monitoredEndpointDao.findById(endpointId).get().getOwner();
-        if (controlService.hasAcces(user.getUsername())) {
-            monitoredEndpointDao.deleteById(endpointId);
-        }
+        monitoredEndpointDao.deleteById(endpointId);
     }
 
     @Scheduled(fixedDelay = 1000)

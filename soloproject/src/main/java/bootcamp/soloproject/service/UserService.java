@@ -20,14 +20,12 @@ public class UserService {
     @Autowired
     private UserRepository userDao;
 
-    @Autowired
-    private AuthorizedControlService controlService;
+    public Optional<User> getUser(Long userId){
+        return userDao.findById(userId);
+    }
 
     public List<User> getUsers(){
-        if(controlService.hasAcces()){
-            return userDao.findAll();
-        }
-        return new ArrayList<>(); // TODO acces denied
+        return userDao.findAll();
     }
 
     public Optional<User> createUser(User user){
@@ -37,19 +35,16 @@ public class UserService {
             userDao.save(user);
             return userDao.findById(user.getId());
         }
-        return null; // TODO acces denied
+        return null; // TODO error handling
     }
 
     public Optional<User> changeEmail(String email, Long userId){
         Optional<User> user = userDao.findById(userId);
         String normalizedEmail = email.trim().toLowerCase(Locale.ROOT);
         Pattern pattern = Pattern.compile(EMAIL_REGEXP);
-
         if (user.isPresent() && pattern.matcher(normalizedEmail).find()) {
-            if(controlService.hasAcces(user.get().getUsername())){
                 user.get().setEmail(email);
                 userDao.save(user.get());
-            }
         } else {
             return Optional.empty(); // TODO acces denied
         }
@@ -57,10 +52,6 @@ public class UserService {
     }
 
     public void deleteUser(Long userId){
-        Optional<User> user = userDao.findById(userId);
-        if(controlService.hasAcces(user.get().getUsername())){
-            userDao.deleteById(userId);
-        }
-        // TODO acces denied
+        userDao.deleteById(userId);
     }
 }
