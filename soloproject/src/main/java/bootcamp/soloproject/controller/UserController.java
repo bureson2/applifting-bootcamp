@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @ResponseStatus(code = HttpStatus.CREATED)
-    @PostMapping(value = "/user/new", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/public/user/new", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Optional<User> createUser(@RequestBody User newUser) {
         return userService.createUser(newUser);
     }

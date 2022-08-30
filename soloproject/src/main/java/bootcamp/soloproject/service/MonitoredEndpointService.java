@@ -8,6 +8,7 @@ import bootcamp.soloproject.model.MonitoringResult;
 import bootcamp.soloproject.model.User;
 import bootcamp.soloproject.security.AuthorizedControlService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -76,7 +77,9 @@ public class MonitoredEndpointService {
         monitoredEndpointDao.deleteById(endpointId);
     }
 
+    // TODO opravit vzniklou chybu
     @Scheduled(fixedDelay = 1000)
+    @Async
     public void monitorEndpoints() throws IOException {
         List<MonitoredEndpoint> monitoredEndpoints = monitoredEndpointDao.findAll();
         for (MonitoredEndpoint endpoint : monitoredEndpoints) {
@@ -84,7 +87,7 @@ public class MonitoredEndpointService {
             LocalDateTime now = LocalDateTime.now();
             if (now.getSecond() % endpoint.getMonitoredInterval() == 0) {
                 MonitoringResult monitoringResult = new MonitoringResult();
-                monitoringResultDao.save(monitoringResult);
+//                monitoringResultDao.save(monitoringResult);
 
                 /* Control connection */
                 URL url = new URL(endpoint.getUri());
@@ -101,10 +104,10 @@ public class MonitoredEndpointService {
 
                 /* Saving response data and closing connection */
                 monitoringResult.setReturnedPayload(content.toString());
+                monitoringResult.setReturnedHttpStatusCode(con.getResponseCode());
                 in.close();
                 con.disconnect();
 
-                monitoringResult.setReturnedHttpStatusCode(con.getResponseCode());
                 monitoringResult.setMonitoredEndpoint(monitoredEndpointDao.findById(endpoint.getId()).get());
                 endpoint.setDateOfLastCheck(now);
                 monitoringResult.setDateOfCheck(now);

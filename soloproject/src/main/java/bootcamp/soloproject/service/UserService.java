@@ -35,6 +35,7 @@ public class UserService {
             userDao.save(user);
             return userDao.findById(user.getId());
         }
+        System.out.println("ahoj");
         return null; // TODO error handling
     }
 
