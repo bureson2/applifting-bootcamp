@@ -11,7 +11,6 @@ public class AuthorizedControlService {
 
     public Boolean hasAcces(String username){
         Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getCredentials();
-        System.out.println(jwt.getClaims());
         Map<String, Object> test = jwt.getClaims();
         String result = (String)test.get("preferred_username");
         return result.equals(username) || result.equals("admin");
@@ -19,7 +18,6 @@ public class AuthorizedControlService {
 
     public Boolean hasAcces(){
         Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getCredentials();
-        System.out.println(jwt.getClaims());
         Map<String, Object> test = jwt.getClaims();
         String result = (String)test.get("preferred_username");
         return result.equals("admin");
