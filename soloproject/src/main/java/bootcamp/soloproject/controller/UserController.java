@@ -5,6 +5,7 @@ import bootcamp.soloproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,6 +39,11 @@ public class UserController {
     @DeleteMapping(value = "/user/{userId}")
     public void deleteUser(@PathVariable Long userId){
         userService.deleteUser(userId);
+    }
+
+    @GetMapping("/public/current/user")
+    public String getCurrentUser(){
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
 }
