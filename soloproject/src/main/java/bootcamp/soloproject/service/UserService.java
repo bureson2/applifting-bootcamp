@@ -2,13 +2,14 @@ package bootcamp.soloproject.service;
 
 import bootcamp.soloproject.interfaces.UserRepository;
 import bootcamp.soloproject.model.User;
+import bootcamp.soloproject.security.AuthorizedControlService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.regex.Pattern;
 
 @Service
@@ -23,12 +24,20 @@ public class UserService {
     private AuthorizedControlService controlService;
 
     public List<User> getUsers(){
-        return userDao.findAll();
+        if(controlService.hasAcces()){
+            return userDao.findAll();
+        }
+        return new ArrayList<>(); // TODO acces denied
     }
 
     public Optional<User> createUser(User user){
-        userDao.save(user);
-        return userDao.findById(user.getId());
+        String normalizedEmail = user.getEmail().trim().toLowerCase(Locale.ROOT);
+        Pattern pattern = Pattern.compile(EMAIL_REGEXP);
+        if (pattern.matcher(normalizedEmail).find()) {
+            userDao.save(user);
+            return userDao.findById(user.getId());
+        }
+        return null; // TODO acces denied
     }
 
     public Optional<User> changeEmail(String email, Long userId){
@@ -37,22 +46,21 @@ public class UserService {
         Pattern pattern = Pattern.compile(EMAIL_REGEXP);
 
         if (user.isPresent() && pattern.matcher(normalizedEmail).find()) {
-            if(controlService.hasAccesToEndpoint(user.get().getUsername())){
+            if(controlService.hasAcces(user.get().getUsername())){
                 user.get().setEmail(email);
                 userDao.save(user.get());
             }
         } else {
-            return Optional.empty();
+            return Optional.empty(); // TODO acces denied
         }
         return user;
     }
 
     public void deleteUser(Long userId){
         Optional<User> user = userDao.findById(userId);
-        if(controlService.hasAccesToEndpoint(user.get().getUsername())){
+        if(controlService.hasAcces(user.get().getUsername())){
             userDao.deleteById(userId);
         }
+        // TODO acces denied
     }
-
-//    TODO SECURITY ?
 }

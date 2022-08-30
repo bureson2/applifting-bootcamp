@@ -6,6 +6,7 @@ import bootcamp.soloproject.interfaces.UserRepository;
 import bootcamp.soloproject.model.MonitoredEndpoint;
 import bootcamp.soloproject.model.MonitoringResult;
 import bootcamp.soloproject.model.User;
+import bootcamp.soloproject.security.AuthorizedControlService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,53 +36,61 @@ public class MonitoredEndpointService {
     @Autowired
     private AuthorizedControlService controlService;
 
-    public List<MonitoredEndpoint> getMonitoredEndpoints(){
+    public List<MonitoredEndpoint> getMonitoredEndpoints() {
         return monitoredEndpointDao.findAll();
     }
 
-    public List<MonitoredEndpoint> getUsersMonitoredEndpoints(Long userId){
+    public List<MonitoredEndpoint> getUsersMonitoredEndpoints(Long userId) {
         Optional<User> user = userDao.findById(userId);
-        List<MonitoredEndpoint> toReturn = null;
-        if(user.isPresent()){
-            if(controlService.hasAccesToEndpoint(user.get().getUsername())){
+        List<MonitoredEndpoint> toReturn = new ArrayList<>();
+        if (user.isPresent()) {
+            if (controlService.hasAcces(user.get().getUsername())) {
                 toReturn = monitoredEndpointDao.findByOwner(user.get());
-            }
+            } // TODO acces denied and not throw
         }
         return toReturn;
     }
 
-    public Optional<MonitoredEndpoint> addMonitoredEndpoint(MonitoredEndpoint monitoredEndpoint, Long userId){
-        if(monitoredEndpoint.getMonitoredInterval() < 1 || monitoredEndpoint.getMonitoredInterval() > 59){
-            return Optional.empty();
-        }
+    public Optional<MonitoredEndpoint> addMonitoredEndpoint(MonitoredEndpoint monitoredEndpoint, Long userId) {
         Optional<User> owner = userDao.findById(userId);
-        owner.ifPresent(monitoredEndpoint::setOwner);
-        monitoredEndpoint.setDateOfCreation(LocalDateTime.now());
-        monitoredEndpointDao.save(monitoredEndpoint);
-        return monitoredEndpointDao.findById(monitoredEndpoint.getId());
+        if (controlService.hasAcces(owner.get().getUsername())) {
+            if (monitoredEndpoint.getMonitoredInterval() < 1 || monitoredEndpoint.getMonitoredInterval() > 59) {
+                return Optional.empty();
+            }
+            owner.ifPresent(monitoredEndpoint::setOwner);
+            monitoredEndpoint.setDateOfCreation(LocalDateTime.now());
+            monitoredEndpointDao.save(monitoredEndpoint);
+            return monitoredEndpointDao.findById(monitoredEndpoint.getId());
+        } // TODO acces denied and not throw
+        return Optional.empty();
     }
 
-    public Optional<MonitoredEndpoint> changeOwner(Long endpointId ,Long userId){
+    public Optional<MonitoredEndpoint> changeOwner(Long endpointId, Long userId) {
         Optional<User> newOwner = userDao.findById(userId);
         Optional<MonitoredEndpoint> endpoint = monitoredEndpointDao.findById(endpointId);
-        if(newOwner.isPresent() && endpoint.isPresent()){
-            endpoint.get().setOwner(newOwner.get());
-            monitoredEndpointDao.save(endpoint.get());
-        }
+        if (controlService.hasAcces("admin")) {
+            if (newOwner.isPresent() && endpoint.isPresent()) {
+                endpoint.get().setOwner(newOwner.get());
+                monitoredEndpointDao.save(endpoint.get());
+            }
+        } // TODO acces denied and not throw
         return endpoint;
     }
 
-    public void deleteMonitoredEndpoint(Long endpointId){
-        monitoredEndpointDao.deleteById(endpointId);
+    public void deleteMonitoredEndpoint(Long endpointId) {
+        User user = monitoredEndpointDao.findById(endpointId).get().getOwner();
+        if (controlService.hasAcces(user.getUsername())) {
+            monitoredEndpointDao.deleteById(endpointId);
+        }
     }
 
     @Scheduled(fixedDelay = 1000)
     public void monitorEndpoints() throws IOException {
         List<MonitoredEndpoint> monitoredEndpoints = monitoredEndpointDao.findAll();
-        for(MonitoredEndpoint endpoint : monitoredEndpoints){
+        for (MonitoredEndpoint endpoint : monitoredEndpoints) {
 
             LocalDateTime now = LocalDateTime.now();
-            if(now.getSecond() % endpoint.getMonitoredInterval() == 0){
+            if (now.getSecond() % endpoint.getMonitoredInterval() == 0) {
                 MonitoringResult monitoringResult = new MonitoringResult();
                 monitoringResultDao.save(monitoringResult);
 
