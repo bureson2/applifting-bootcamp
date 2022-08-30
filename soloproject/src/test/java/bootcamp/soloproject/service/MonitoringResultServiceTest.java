@@ -42,33 +42,33 @@ class MonitoringResultServiceTest {
         testUser.setUsername("Username");
         testUser.setEmail("email@email.com");
         testUser.setAccesToken(UUID.randomUUID());
-        userService.createUser(testUser);
+        testUser = userService.createUser(testUser).get();
         testUser2 = new User();
         testUser2.setId(Long.parseLong("1"));
         testUser2.setUsername("Username");
         testUser2.setEmail("email@email.com");
         testUser2.setAccesToken(UUID.randomUUID());
-        userService.createUser(testUser2);
+        testUser2 = userService.createUser(testUser2).get();
         testEndpoint = new MonitoredEndpoint();
         testEndpoint.setName("endpoint-name");
         testEndpoint.setUri("http://localhost:8080/users");
         testEndpoint.setMonitoredInterval(1);
-        monitoredEndpointService.addMonitoredEndpoint(testEndpoint, testUser.getId());
+        testEndpoint = monitoredEndpointService.addMonitoredEndpoint(testEndpoint, testUser.getId()).get();
         testEndpoint2 = new MonitoredEndpoint();
         testEndpoint2.setName("endpoint-name");
         testEndpoint2.setUri("http://localhost:8080/users");
         testEndpoint2.setMonitoredInterval(2);
-        monitoredEndpointService.addMonitoredEndpoint(testEndpoint2, testUser2.getId());
+        testEndpoint2 = monitoredEndpointService.addMonitoredEndpoint(testEndpoint2, testUser2.getId()).get();
         testResult.setReturnedPayload("json data");
         testResult.setReturnedHttpStatusCode(200);
     }
 
     @Test
     void shouldCreateMonitoringResult(){
-        stu.saveMonitoringResult(testResult, testEndpoint.getId());
+        MonitoringResult result = stu.saveMonitoringResult(testResult, testEndpoint.getId()).get();
         assertEquals(
                 testResult,
-                resultDao.findById(testResult.getId()).get()
+                resultDao.findById(result.getId()).get()
         );
     }
 
@@ -104,10 +104,10 @@ class MonitoringResultServiceTest {
 
     @Test
     void shouldDeleteMonitoringResult(){
-        stu.saveMonitoringResult(testResult, testEndpoint.getId());
-        stu.deleteMonitoringResult(testResult.getId());
+        MonitoringResult result = stu.saveMonitoringResult(testResult, testEndpoint.getId()).get();
+        stu.deleteMonitoringResult(result.getId());
         assertNull(
-          resultDao.findById(testResult.getId())
+          resultDao.findById(result.getId())
         );
     }
 

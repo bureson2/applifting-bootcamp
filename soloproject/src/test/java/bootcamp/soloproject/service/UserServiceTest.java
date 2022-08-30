@@ -12,6 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.Optional;
 import java.util.UUID;
 import java.util.List;
 
@@ -36,7 +38,6 @@ import static org.junit.jupiter.api.Assertions.*;
     @BeforeEach
     void setUp() {
         testUser = new User();
-        testUser.setId(Long.parseLong("1"));
         testUser.setUsername("Username");
         testUser.setEmail("email@email.com");
         testUser.setAccesToken(UUID.randomUUID());
@@ -44,46 +45,54 @@ import static org.junit.jupiter.api.Assertions.*;
 
     @Test
     void shouldCreateNewUser(){
-        stu.createUser(testUser);
+        User result = stu.createUser(testUser).get();
         assertEquals(
-                testUser,
-                userDao.findById(testUser.getId()).get()
+                testUser.getUsername(),
+                result.getUsername()
+        );
+        assertEquals(
+                testUser.getEmail(),
+                result.getEmail()
+        );
+        assertEquals(
+                testUser.getAccesToken(),
+                result.getAccesToken()
         );
     }
 
     @Test
     void shouldChangeEmail(){
-        stu.createUser(testUser);
+        User resultUser = stu.createUser(testUser).get();
         String email = "newemail@email.com";
-        stu.changeEmail(email, testUser.getId());
+        stu.changeEmail(email, resultUser.getId());
         assertEquals(
                 email,
-                userDao.findById(testUser.getId()).get().getEmail()
+                userDao.findById(resultUser.getId()).get().getEmail()
         );
     }
 
     @Test
     void shouldNotChangeEmail(){
-        stu.createUser(testUser);
+        User resultUser = stu.createUser(testUser).get();
         String email = "newemail@.com";
         assertNull(
-                stu.changeEmail(email, testUser.getId())
+                stu.changeEmail(email, resultUser.getId())
         );
     }
 
     @Test
     void shouldDeleteUser(){
-        stu.createUser(testUser);
-        stu.deleteUser(testUser.getId());
+        User resultUser = stu.createUser(testUser).get();
+        stu.deleteUser(resultUser.getId());
         assertNull(
-                userDao.findById(testUser.getId())
+                userDao.findById(resultUser.getId())
         );
     }
 
     @Test
     void shouldReturnOneUser(){
         stu.createUser(testUser);
-        List<User> users = userDao.findAll();
+        List<User> users = stu.getUsers();
         assertEquals(
                 1,
                 users.toArray().length

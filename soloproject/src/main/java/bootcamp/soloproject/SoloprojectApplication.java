@@ -1,5 +1,8 @@
 package bootcamp.soloproject;
 
+import bootcamp.soloproject.model.User;
+import bootcamp.soloproject.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.ImportResource;
@@ -7,7 +10,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
-@ImportResource({"classpath*:application.yaml"})
 public class SoloprojectApplication {
 
 //    public static void main(String[] args) {
@@ -18,7 +20,5 @@ public class SoloprojectApplication {
         SpringApplicationBuilder app = new SpringApplicationBuilder(SoloprojectApplication.class)
                 .properties("spring.config.location=classpath:application.yaml,classpath:application.yaml");
         app.run(args);
-
     }
-
 }

@@ -37,13 +37,13 @@ class MonitoredEndpointServiceTest {
         testUser.setUsername("Username");
         testUser.setEmail("email@email.com");
         testUser.setAccesToken(UUID.randomUUID());
-        userService.createUser(testUser);
+        testUser = userService.createUser(testUser).get();
         testUser2 = new User();
         testUser2.setId(Long.parseLong("1"));
         testUser2.setUsername("Username");
         testUser2.setEmail("email@email.com");
         testUser2.setAccesToken(UUID.randomUUID());
-        userService.createUser(testUser2);
+        testUser2 = userService.createUser(testUser2).get();
         testEndpoint = new MonitoredEndpoint();
         testEndpoint.setName("endpoint-name");
         testEndpoint.setUri("http://localhost:8080/users");
@@ -56,17 +56,26 @@ class MonitoredEndpointServiceTest {
 
     @Test
     void shouldCreateMonitoredEndpoint(){
-        stu.addMonitoredEndpoint(testEndpoint, testUser.getId());
+
+        MonitoredEndpoint result = stu.addMonitoredEndpoint(testEndpoint, testUser.getId()).get();
         assertEquals(
-                testEndpoint,
-                endpointDao.findById(testEndpoint.getId()).get()
+                testEndpoint.getName(),
+                endpointDao.findById(result.getId()).get().getName()
+        );
+        assertEquals(
+                testEndpoint.getUri(),
+                endpointDao.findById(result.getId()).get().getUri()
+        );
+        assertEquals(
+                testEndpoint.getMonitoredInterval(),
+                endpointDao.findById(result.getId()).get().getMonitoredInterval()
         );
     }
 
     @Test
     void shouldReturnTwoMonitoredEndpoint(){
-        stu.addMonitoredEndpoint(testEndpoint, testUser.getId());
-        stu.addMonitoredEndpoint(testEndpoint2, testUser2.getId());
+        stu.addMonitoredEndpoint(testEndpoint, testUser.getId()).get();
+        stu.addMonitoredEndpoint(testEndpoint2, testUser2.getId()).get();
         assertEquals(
                 2,
                 stu.getMonitoredEndpoints().toArray().length
@@ -75,8 +84,8 @@ class MonitoredEndpointServiceTest {
 
     @Test
     void shouldReturnOneMonitoredEndpoint(){
-        stu.addMonitoredEndpoint(testEndpoint, testUser.getId());
-        stu.addMonitoredEndpoint(testEndpoint2, testUser2.getId());
+        stu.addMonitoredEndpoint(testEndpoint, testUser.getId()).get();
+        stu.addMonitoredEndpoint(testEndpoint2, testUser2.getId()).get();
         assertEquals(
                 1,
                 stu.getUsersMonitoredEndpoints(testUser.getId()).toArray().length
@@ -85,21 +94,20 @@ class MonitoredEndpointServiceTest {
 
     @Test
     void shouldChangeOwner(){
-        stu.addMonitoredEndpoint(testEndpoint, testUser.getId());
-        stu.changeOwner(testEndpoint.getId(), testUser2.getId());
+        MonitoredEndpoint result = stu.addMonitoredEndpoint(testEndpoint, testUser.getId()).get();
+        stu.changeOwner(result.getId(), testUser2.getId());
         assertEquals(
                 testUser2,
-                endpointDao.findById(testEndpoint.getId()).get().getOwner()
+                endpointDao.findById(result.getId()).get().getOwner()
         );
     }
 
     @Test
     void shouldDeleteEndpoint(){
-        stu.addMonitoredEndpoint(testEndpoint, testUser.getId());
-        stu.deleteMonitoredEndpoint(testEndpoint.getId());
+        MonitoredEndpoint result = stu.addMonitoredEndpoint(testEndpoint, testUser.getId()).get();
+        stu.deleteMonitoredEndpoint(result.getId());
         assertNull(
-                endpointDao.findById(testEndpoint.getId())
+                endpointDao.findById(result.getId())
         );
     }
-
 }
