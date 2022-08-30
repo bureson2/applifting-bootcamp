@@ -19,6 +19,9 @@ public class UserService {
     @Autowired
     private UserRepository userDao;
 
+    @Autowired
+    private AuthorizedControlService controlService;
+
     public List<User> getUsers(){
         return userDao.findAll();
     }
@@ -34,8 +37,10 @@ public class UserService {
         Pattern pattern = Pattern.compile(EMAIL_REGEXP);
 
         if (user.isPresent() && pattern.matcher(normalizedEmail).find()) {
-            user.get().setEmail(email);
-            userDao.save(user.get());
+            if(controlService.hasAccesToEndpoint(user.get().getUsername())){
+                user.get().setEmail(email);
+                userDao.save(user.get());
+            }
         } else {
             return Optional.empty();
         }
@@ -43,7 +48,10 @@ public class UserService {
     }
 
     public void deleteUser(Long userId){
-        userDao.deleteById(userId);
+        Optional<User> user = userDao.findById(userId);
+        if(controlService.hasAccesToEndpoint(user.get().getUsername())){
+            userDao.deleteById(userId);
+        }
     }
 
 //    TODO SECURITY ?

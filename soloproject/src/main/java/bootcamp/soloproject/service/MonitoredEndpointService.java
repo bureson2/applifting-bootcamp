@@ -31,6 +31,9 @@ public class MonitoredEndpointService {
     @Autowired
     private MonitoringResultRepository monitoringResultDao;
 
+    @Autowired
+    private AuthorizedControlService controlService;
+
     public List<MonitoredEndpoint> getMonitoredEndpoints(){
         return monitoredEndpointDao.findAll();
     }
@@ -39,7 +42,9 @@ public class MonitoredEndpointService {
         Optional<User> user = userDao.findById(userId);
         List<MonitoredEndpoint> toReturn = null;
         if(user.isPresent()){
-            toReturn = monitoredEndpointDao.findByOwner(user.get());
+            if(controlService.hasAccesToEndpoint(user.get().getUsername())){
+                toReturn = monitoredEndpointDao.findByOwner(user.get());
+            }
         }
         return toReturn;
     }
