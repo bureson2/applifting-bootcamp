@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "monitoring_results")
@@ -30,4 +31,17 @@ public class MonitoringResult {
     @JoinColumn(name = "monitored_endpoint_id")
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private MonitoredEndpoint monitoredEndpoint;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MonitoringResult that = (MonitoringResult) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

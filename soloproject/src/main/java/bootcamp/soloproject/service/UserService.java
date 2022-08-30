@@ -6,12 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 @Service
-@Component
 public class UserService {
+
+    private static final String EMAIL_REGEXP = "(?i)^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$";
 
     @Autowired
     private UserRepository userDao;
@@ -27,9 +30,14 @@ public class UserService {
 
     public Optional<User> changeEmail(String email, Long userId){
         Optional<User> user = userDao.findById(userId);
-        if(user.isPresent()){
+        String normalizedEmail = email.trim().toLowerCase(Locale.ROOT);
+        Pattern pattern = Pattern.compile(EMAIL_REGEXP);
+
+        if (user.isPresent() && pattern.matcher(normalizedEmail).find()) {
             user.get().setEmail(email);
             userDao.save(user.get());
+        } else {
+            return Optional.empty();
         }
         return user;
     }
