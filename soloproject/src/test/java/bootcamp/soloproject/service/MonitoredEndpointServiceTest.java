@@ -3,7 +3,7 @@ package bootcamp.soloproject.service;
 import bootcamp.soloproject.interfaces.MonitoredEndpointRepository;
 import bootcamp.soloproject.model.MonitoredEndpoint;
 import bootcamp.soloproject.model.User;
-import org.junit.jupiter.api.Assertions;
+import bootcamp.soloproject.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ class MonitoredEndpointServiceTest {
     private MonitoredEndpointService stu;
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
     @Autowired
     private MonitoredEndpointRepository endpointDao;
@@ -37,13 +37,13 @@ class MonitoredEndpointServiceTest {
         testUser.setUsername("Username");
         testUser.setEmail("email@email.com");
         testUser.setAccesToken(UUID.randomUUID());
-        testUser = userService.createUser(testUser).get();
+        testUser = userServiceImpl.createUser(testUser).get();
         testUser2 = new User();
         testUser2.setId(Long.parseLong("1"));
         testUser2.setUsername("Username");
         testUser2.setEmail("email@email.com");
         testUser2.setAccesToken(UUID.randomUUID());
-        testUser2 = userService.createUser(testUser2).get();
+        testUser2 = userServiceImpl.createUser(testUser2).get();
         testEndpoint = new MonitoredEndpoint();
         testEndpoint.setName("endpoint-name");
         testEndpoint.setUri("http://localhost:8080/users");

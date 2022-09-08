@@ -2,7 +2,7 @@ package bootcamp.soloproject.controller;
 
 import bootcamp.soloproject.model.User;
 import bootcamp.soloproject.security.AuthorizedControlService;
-import bootcamp.soloproject.service.UserService;
+import bootcamp.soloproject.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,7 +17,7 @@ import java.util.Optional;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
     @Autowired
     private AuthorizedControlService controlService;
@@ -26,7 +26,7 @@ public class UserController {
     @GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<User> getUsers() {
         if (controlService.hasAcces()) {
-            return userService.getUsers();
+            return userServiceImpl.getUsers();
         }
         return new ArrayList<>(); // TODO acces denied
     }
@@ -34,15 +34,15 @@ public class UserController {
     @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping(value = "/public/user/new", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Optional<User> createUser(@RequestBody User newUser) {
-        return userService.createUser(newUser);
+        return userServiceImpl.createUser(newUser);
     }
 
     @ResponseStatus(code = HttpStatus.OK)
     @PutMapping(value = "/user/{userId}/email")
     public Optional<User> changeEmail(@RequestBody String email, @PathVariable Long userId) {
-        User user = userService.getUser(userId).get(); // TODO KONTROLA
+        User user = userServiceImpl.getUser(userId).get(); // TODO KONTROLA
         if (controlService.hasAcces(user.getUsername())) {
-            return userService.changeEmail(email, userId);
+            return userServiceImpl.changeEmail(email, userId);
         }
         return null; // TODO acces denied
     }
@@ -50,9 +50,9 @@ public class UserController {
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     @DeleteMapping(value = "/user/{userId}")
     public void deleteUser(@PathVariable Long userId) {
-        User user = userService.getUser(userId).get();
+        User user = userServiceImpl.getUser(userId).get();
         if (controlService.hasAcces(user.getUsername())) {
-            userService.deleteUser(userId);
+            userServiceImpl.deleteUser(userId);
         }
     }
 

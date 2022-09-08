@@ -2,20 +2,25 @@ package bootcamp.soloproject.service;
 
 import bootcamp.soloproject.interfaces.UserRepository;
 import bootcamp.soloproject.model.User;
+import bootcamp.soloproject.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import java.util.UUID;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
- class UserServiceTest {
+class UserServiceImplTest {
 
     @Autowired
-    private UserService stu;
+    private UserServiceImpl userService;
 
     @Autowired
     private UserRepository userDao;
@@ -32,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
     @Test
     void shouldCreateNewUser(){
-        User result = stu.createUser(testUser).get();
+        User result = userService.createUser(testUser).get();
         assertEquals(
                 testUser.getUsername(),
                 result.getUsername()
@@ -49,9 +54,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
     @Test
     void shouldChangeEmail(){
-        User resultUser = stu.createUser(testUser).get();
+        User resultUser = userService.createUser(testUser).get();
         String email = "newemail@email.com";
-        stu.changeEmail(email, resultUser.getId());
+        userService.changeEmail(email, resultUser.getId());
         assertEquals(
                 email,
                 userDao.findById(resultUser.getId()).get().getEmail()
@@ -60,17 +65,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
     @Test
     void shouldNotChangeEmail(){
-        User resultUser = stu.createUser(testUser).get();
+        User resultUser = userService.createUser(testUser).get();
         String email = "newemail@.com";
         assertNull(
-                stu.changeEmail(email, resultUser.getId())
+                userService.changeEmail(email, resultUser.getId())
         );
     }
 
     @Test
     void shouldDeleteUser(){
-        User resultUser = stu.createUser(testUser).get();
-        stu.deleteUser(resultUser.getId());
+        User resultUser = userService.createUser(testUser).get();
+        userService.deleteUser(resultUser.getId());
         assertNull(
                 userDao.findById(resultUser.getId())
         );
@@ -78,16 +83,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
     @Test
     void shouldReturnOneUser(){
-        stu.createUser(testUser);
-        List<User> users = stu.getUsers();
+        userService.createUser(testUser);
+        List<User> users = userService.getUsers();
         assertEquals(
                 1,
                 users.toArray().length
         );
-    }
-
-    @Test
-    void test(){
-        assertTrue(true);
     }
 }

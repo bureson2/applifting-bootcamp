@@ -4,7 +4,7 @@ import bootcamp.soloproject.model.MonitoredEndpoint;
 import bootcamp.soloproject.model.User;
 import bootcamp.soloproject.security.AuthorizedControlService;
 import bootcamp.soloproject.service.MonitoredEndpointService;
-import bootcamp.soloproject.service.UserService;
+import bootcamp.soloproject.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,7 +24,7 @@ public class MonitoredEndpointController {
     private AuthorizedControlService controlService;
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
     @ResponseStatus(code = HttpStatus.OK)
     @GetMapping(value = "/endpoints", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -38,7 +38,7 @@ public class MonitoredEndpointController {
     @ResponseStatus(code = HttpStatus.OK)
     @GetMapping(value = "/endpoints/user/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<MonitoredEndpoint> getUsersMonitoredEndpoints(@PathVariable Long userId) {
-        User user = userService.getUser(userId).get(); // TODO
+        User user = userServiceImpl.getUser(userId).get(); // TODO
         if (controlService.hasAcces(user.getUsername())) {
             return monitoredEndpointService.getUsersMonitoredEndpoints(userId);
         }
@@ -48,7 +48,7 @@ public class MonitoredEndpointController {
     @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping(value = "/endpoint/new/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Optional<MonitoredEndpoint> addMonitoredEndpoint(@RequestBody MonitoredEndpoint newEndpoint, @PathVariable Long userId) {
-        User user = userService.getUser(userId).get(); // TODO
+        User user = userServiceImpl.getUser(userId).get(); // TODO
         if (controlService.hasAcces(user.getUsername())) {
             return monitoredEndpointService.addMonitoredEndpoint(newEndpoint, userId);
         }

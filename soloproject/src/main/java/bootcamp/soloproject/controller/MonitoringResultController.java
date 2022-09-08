@@ -5,7 +5,7 @@ import bootcamp.soloproject.model.User;
 import bootcamp.soloproject.security.AuthorizedControlService;
 import bootcamp.soloproject.service.MonitoredEndpointService;
 import bootcamp.soloproject.service.MonitoringResultService;
-import bootcamp.soloproject.service.UserService;
+import bootcamp.soloproject.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,7 +28,7 @@ public class MonitoringResultController {
     private MonitoredEndpointService endpointService;
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
     @ResponseStatus(code = HttpStatus.OK)
     @GetMapping(value = "/results", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -62,7 +62,7 @@ public class MonitoringResultController {
     @ResponseStatus(code = HttpStatus.OK)
     @GetMapping(value = "/user/{userId}/results")
     public List<MonitoringResult> getUserEndpointsResults(@PathVariable Long userId) {
-        User user = userService.getUser(userId).get(); // TODO
+        User user = userServiceImpl.getUser(userId).get(); // TODO
         if (controlService.hasAcces(user.getUsername())) {
             return monitoringResultService.getUserResults(userId);
         }
